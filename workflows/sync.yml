@@ -1,26 +1,27 @@
-name: Sync Discord Roles to Supabase
+name: Sync Discord Sub Roles to Supabase
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # සෑම විනාඩි 30කට වරක්ම Auto Run වේ
-  workflow_dispatch: # Manual "Run" බටන් එක ලබා දීමට
+    - cron: '0 * * * *' # සෑම පැයකටම වරක් (Every 1 hour) Auto Run වේ
+  workflow_dispatch: # ඕනෑම වෙලාවක Manual Run කර බලන්න
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
       - name: Install Dependencies
-        run: pip install requests supabase
+        run: |
+          pip install requests supabase
 
-      - name: Run Sync Script
+      - name: Execute Role Sync Script
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
